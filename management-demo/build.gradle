@@ -1,0 +1,30 @@
+apply plugin: 'war'
+
+dependencies{
+    // 依赖 entity-demo 模块
+    compile project(":entity-demo")
+    compile(
+            "org.springframework:spring-webmvc:$springVersion",
+            "org.apache.taglibs:taglibs-standard-impl:1.2.1"
+    )
+    //系统提供的依赖
+    providedCompile(
+            "javax.servlet:javax.servlet-api:3.1.0",
+            "javax.servlet.jsp:jsp-api:2.2.1-b03",
+            "javax.servlet.jsp.jstl:javax.servlet.jsp.jstl-api:1.2.1"
+    )
+}
+
+war {
+    from("$projectDir/src/main/resources") {
+        include "*.prooperties"
+        into("WEB-INF/classes")
+    }
+}
+
+task('jarPath') << {
+    configurations.runtime.resolve().each {
+        println it.toString() + ";"
+    }
+    println()
+}
